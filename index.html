@@ -8,12 +8,21 @@
     <!-- Pixelated font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 
-    <!-- Favicon placeholder (replace with your own pixelated icon) -->
-<link rel="icon" type="image/png" href="https://i.pinimg.com/736x/bc/56/a6/bc56a648f77fdd64ae5702a8943d36ae.jpg" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/bc/56/a6/bc56a648f77fdd64ae5702a8943d36ae.jpg" />
 
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <!-- Canvas for pixelated comets -->
+    <canvas id="cometCanvas"></canvas>
+
+    <!-- 🎵 Background music -->
+    <audio id="bg-music" autoplay loop>
+  <source src="montagem-batchii.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
     <main class="container">
         <h1 class="glitch-text" aria-label="Doxxer3000">Doxxer3000</h1>
 
@@ -36,6 +45,16 @@
         <p>© All rights to malindiboys lil child.<br />
         Contact us: <a href="mailto:i-love-your-mo,@gmail.com">i-love-your-mom@gmail.com</a></p>
     </footer>
+
+    <!-- Force autoplay on user interaction (required by some browsers) -->
+    <script>
+        document.addEventListener('click', () => {
+            const music = document.getElementById('bg-music');
+            if (music.paused) {
+                music.play().catch(() => {});
+            }
+        });
+    </script>
 
     <script defer src="script.js"></script>
 </body>
