@@ -1,115 +1,192 @@
-/* Fonts & Base */
+/* Import pixelated font */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
+    background: linear-gradient(135deg, #0b0b0b, #1a1a1a);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    color: #b4b4b4;
     margin: 0;
-    padding: 0;
-    background-color: #111;
-    font-family: 'Press Start 2P', monospace;
-    color: #ccc;
-    text-align: center;
+    height: 100vh;
+    overflow-x: hidden;
 }
 
-/* Container */
+/* Gradient background animation */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Container styling */
 .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 60px 20px;
-}
-
-/* Glitchy Header Animation */
-.glitch-text {
-    font-size: 24px;
-    color: #00ffcc;
+    max-width: 600px;
+    margin: 80px auto 40px;
+    padding: 0 20px;
     position: relative;
-    animation: flicker 2s infinite;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+    z-index: 10;
 }
 
-@keyframes flicker {
-    0%, 100% { opacity: 1; }
-    10% { opacity: 0.7; }
-    20% { opacity: 0.9; }
-    30% { opacity: 0.5; }
-    40% { opacity: 0.8; }
-    50% { opacity: 1; }
-    60% { opacity: 0.6; }
-    70% { opacity: 0.95; }
-    80% { opacity: 0.3; }
-    90% { opacity: 0.9; }
+/* Glitch text */
+.glitch-text {
+    font-size: 3.5rem;
+    color: #d463d4;
+    position: relative;
+    letter-spacing: 0.1em;
+    user-select: none;
+    animation: flicker 3s infinite;
 }
 
-/* Subtext */
-.tagline {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 30px;
-}
-
-/* Input Styling */
-.search-bar input {
-    background-color: #222;
-    border: 2px solid #00ffcc;
-    color: #00ffcc;
-    font-family: 'Press Start 2P', monospace;
-    padding: 10px;
-    width: 90%;
-    max-width: 400px;
-    outline: none;
-    font-size: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-/* Links */
-.links {
-    font-size: 10px;
-    color: #bbb;
-    line-height: 1.6;
-    margin-top: 20px;
-}
-
-.links a {
-    color: #00ffcc;
-    text-decoration: none;
-}
-
-.links a:hover {
-    color: #ffffff;
-}
-
-/* Footer */
-footer {
-    margin-top: 60px;
-    font-size: 9px;
-    color: #666;
-}
-
-footer a {
-    color: #00ffcc;
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: #fff;
-}
-
-/* Optional retro scanline effect */
-.scanlines {
-    position: fixed;
-    top: 0;
+/* Glitch layers */
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(aria-label);
+    position: absolute;
     left: 0;
+    top: 0;
     width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02),
-        rgba(255,255,255,0.02) 1px,
-        transparent 1px,
-        transparent 3px
-    );
+    overflow: hidden;
+    color: #800080;
+    clip: rect(0, 900px, 0, 0);
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00c8;
+    animation: glitch-anim-1 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -2px 0 #00fff9;
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+/* Glitch keyframes */
+@keyframes glitch-anim-1 {
+    0% {
+        clip: rect(24px, 9999px, 56px, 0);
+        transform: translate(0);
+    }
+    50% {
+        clip: rect(85px, 9999px, 140px, 0);
+        transform: translate(-2px, -2px);
+    }
+    100% {
+        clip: rect(24px, 9999px, 56px, 0);
+        transform: translate(0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(56px, 9999px, 85px, 0);
+        transform: translate(0);
+    }
+    50% {
+        clip: rect(10px, 9999px, 30px, 0);
+        transform: translate(2px, 2px);
+    }
+    100% {
+        clip: rect(56px, 9999px, 85px, 0);
+        transform: translate(0);
+    }
+}
+
+/* Flicker animation */
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+    }
+    20%, 22%, 24%, 55% {
+        opacity: 0.5;
+    }
+}
+
+/* Tagline styling */
+.tagline {
+    font-size: 1.1rem;
+    margin-top: 20px;
+    color: #cc99ff;
+}
+
+/* Search bar styling */
+.search-bar {
+    margin: 40px 0 30px;
+}
+
+.search-bar input {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid #800080;
+    border-radius: 8px;
+    background-color: #111;
+    colour: #b4b4b4;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    outline: none;
+    colour: #b4b4b4;
+}
+
+.search-bar input::placeholder {
+    color: #7a4e7a;
+    opacity: 0.7;
+}
+
+/* Glow on focus */
+.search-bar input:focus {
+    box-shadow: 0 0 15px #d463d4, 0 0 30px #e28fe3;
+    border-color: #d463d4;
+}
+
+/* Links styling */
+.links a {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    color: #b4b4b4;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.links a:hover,
+.links a:focus {
+    color: #d463d4;
+    text-shadow: 0 0 8px #d463d4;
+}
+
+/* Footer styling */
+footer {
+    margin-top: 40px;
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* Scanlines overlay */
+.scanlines {
     pointer-events: none;
-    z-index: 999;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+    animation: scanlineMove 2s linear infinite;
+    z-index: 1;
+}
+
+@keyframes scanlineMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 4px;
+    }
 }
